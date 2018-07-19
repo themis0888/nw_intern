@@ -29,7 +29,11 @@ label_dict 	= {..., '608/2682608.jpg': [1, 1, 0, 0, 0, 0, 0, 0, 0, 1], ...}
 
 def convert(metadata_path):
 	tag_dict = {}
+<<<<<<< HEAD
 	for i in range(1):
+=======
+	for i in range(6):
+>>>>>>> 25dde7d6bb745cc2942cf08c3a746dc7a1c7c407
 		tag_dict.update(dict(np.load(os.path.join(metadata_path, 'metadata_{}.npy'.format(i))).item()))
 
 	key_list = sorted_key_lst[:num_used_key]

@@ -24,8 +24,8 @@ Convert the tag-dictionary to label dictionary
 ex) when num_used_key = 10
 tag_dict 	= {..., '2682608': ['1girl', 'bags_under_eyes', ..], ...}
 label_dict 	= {..., '608/2682608.jpg': [1, 1, 0, 0, 0, 0, 0, 0, 0, 1], ...}
-
 """
+
 def convert_to(metadata_path, smoothing = 0):
 	tag_dict = {}
 	for i in range(6):

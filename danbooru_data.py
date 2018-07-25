@@ -30,4 +30,7 @@ gan_tags		= {'aqua eyes', 'aqua hair', 'black eyes', 'black hair',
 
 please_dont 	= {'bangs', 'nipples', 'nude', 'ass'}
 dont_know 		= {'translated', 'd'}
-irrelevant 		= {'bad_id', 'bad_pixiv_id', 'translation_request', 'commentary_request',  'absurdres'}
+irrelevant 		= {'bad_id', 'bad_pixiv_id', 'translation_request', 'commentary_request',  'absurdres', 'original'}
+
+tag_num_sex		= {'1girl','solo','multiple_girls','2girls','1boy','multiple_boys'}
+tag_hair		= {"short_hair", "long_hair", "purple_hair", "blue_hair", "blonde_hair", "hair_ornament", "brown_hair", "green_hair", "black_hair", "red_hair", "hair_ribbon", "hairband", "very_long_hair", "hair_bow", "pink_hair", "silver_hair"}

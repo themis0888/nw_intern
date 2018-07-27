@@ -3,3 +3,6 @@
 ~$Naver_Clova_AI_Party.pptx
 utils/awa_whole_list.txt
 metadata_0.npy
+*.pptx
+*.pyc
+*.npy

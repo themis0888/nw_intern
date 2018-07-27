@@ -14,6 +14,17 @@ import tensorflow.contrib.slim.nets as nets
 import data_loader
 import scipy.io as sio
 
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--data_path', type=str, dest='data_path', default='/home/siit/navi/data/danbooru2017/256px/')
+parser.add_argument('--data_name', type=str, dest='data_name', default='danbooru')
+parser.add_argument('--save_path', type=str, dest='save_path', default=config.data_path + 'meta/')
+parser.add_argument('--model_path', type=str, dest='model_path', default='./vgg_19.ckpt')
+config, unparsed = parser.parse_known_args() 
+
+
+
 flags = tf.app.flags
 #################################################
 ########### model configuration #################
@@ -68,7 +79,7 @@ var_to_restore = [v for v in all_vars if not v.name.startswith('vgg_19/fc8')]
 
 tf.train.start_queue_runners(sess=sess)
 saver = tf.train.Saver(var_to_restore)
-saver.restore(sess, "/st1/dhna/zsl/data/feature_extract/vgg_19.ckpt")
+saver.restore(sess, config.model_path)
 
 feat = []
 lab = []
@@ -82,6 +93,10 @@ for i in range(30475):
 	if i%100 == 0:
 		print (i, " th iteration")
 
-sio.savemat('/st1/dhna/zsl/data/feature_extract/vgg_19_awa.mat', {'feature': feat, 'label': lab})
+
+if not os.path.exists(config.save_path):
+	os.mkdir(config.save_path)
+
+sio.savemat(config.save_path + config.data_name + 'feature_value.mat', {'feature': feat, 'label': lab})
 
 print('end')

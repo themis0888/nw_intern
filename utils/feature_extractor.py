@@ -3,6 +3,12 @@ CUDA_VISIBLE_DEVICES=1 python feature_extractor.py \
 --data_path=/home/siit/navi/data/sample/ \
 --list_path=/home/siit/navi/data/sample/meta/ \
 --model_name=vgg_19
+
+
+CUDA_VISIBLE_DEVICES=1 python feature_extractor.py \
+--data_path=/home/siit/navi/data/danbooru2017/256px/ \
+--list_path=/home/siit/navi/data/danbooru2017/256px/meta/ \
+--model_name=vgg_19
 """
 
 import pdb
@@ -98,7 +104,7 @@ for i in range(num_file+1):
 	feat.append(feature[0][0][0])
 	lab.append(idx[0])
 	if i%100 == 0:
-		print("{} \% done".format(100*i/num_file))
+		print("{0:5f} % done".format(100*i/num_file))
 
 
 save_path = config.data_path + 'meta/'

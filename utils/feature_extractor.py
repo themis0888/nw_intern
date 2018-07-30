@@ -76,7 +76,7 @@ if config.model_name == 'vgg_19':
 
 	with slim.arg_scope(vgg.vgg_arg_scope()):
 		logits, endpoints = vgg.vgg_19(x, num_classes=config.n_classes, is_training=False)
-		feat_layer = endpoints['vgg_19/fc8/squeezed']
+		feat_layer = endpoints['vgg_19/fc7']
 	all_vars = tf.all_variables()
 	var_to_restore = [v for v in all_vars if not v.name.startswith('vgg_19/fc8')]
 
@@ -85,17 +85,17 @@ elif config.model_name == 'resnet_v1_50':
 	res = nets.resnet_v1
 	with slim.arg_scope(res.resnet_arg_scope()):
 		logits, endpoints = res.resnet_v1_50(x, num_classes=config.n_classes, is_training=False)
-		feat_layer = endpoints['resnet_v1_50/block4']
+		feat_layer = endpoints['resnet_v1_50/block4/unit_3/bottleneck_v1']
 	all_vars = tf.all_variables()
-	var_to_restore = [v for v in all_vars if not v.name.startswith('resnet_v1_50/block4/unit_3/bottleneck_v1')]
+	var_to_restore = [v for v in all_vars] # if not v.name.startswith('predictions')]
 
 
 elif config.model_name == 'inception_v3':
 	with slim.arg_scope(inc.inception_v3_arg_scope()):
 		logits, endpoints = inc.inception_v3(x, num_classes=config.n_classes, is_training=False)
-		feat_layer = endpoints['Logits']
+		feat_layer = endpoints['PreLogits']
 	all_vars = tf.all_variables()
-	var_to_restore = [v for v in all_vars if not v.name.startswith('Logits')]
+	var_to_restore = [v for v in all_vars] # if not v.name.startswith('Logits')]
 
 
 

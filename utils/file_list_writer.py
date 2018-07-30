@@ -1,6 +1,6 @@
 """
 python file_list_writer.py \
---data_path=/home/siit/navi/data/sample/ \
+--data_path=/shared/data/sample/ \
 --data_name=sample
 """
 

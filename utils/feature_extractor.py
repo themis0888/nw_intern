@@ -1,5 +1,6 @@
 """
-CUDA_VISIBLE_DEVICES=1 python feature_extractor.py \
+CUDA_VISIBLE_DEVICES=3 CUDA_CACHE_PATH="/gpu_cache/" \
+python feature_extractor.py \
 --data_path=/shared/data/sample/ \
 --list_path=/shared/data/sample/meta/ \
 --model_name=vgg_19
@@ -40,22 +41,6 @@ config, unparsed = parser.parse_known_args()
 gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=config.memory_usage)
 sess = tf.InteractiveSession(config=tf.ConfigProto(gpu_options=gpu_options))
 
-awa_train_path = config.data_path + 'meta/path_label_list.txt'
-model_path = '/shared/data/models/' + config.model_name + '.ckpt'
-
-# num_file : int 
-# count the number of input image files
-with open(awa_train_path) as f:
-    for num_file, l in enumerate(f):
-        pass
-
-"""
-example) queue_data('/home/siit/navi/data/sample/meta/path_label_list.txt', 
-50, 1, 'val',multi_label=False)
-"""
-trainX, trainY = data_loader.queue_data(
-		awa_train_path, config.n_classes, config.batch_size, 'val', multi_label=False)
-
 """ TRAINING """
 x = tf.placeholder(tf.float32, shape=[None, 224, 224, 3])
 y_ = tf.placeholder(tf.float32, shape=[None, config.n_classes])
@@ -94,10 +79,10 @@ elif config.model_name == 'inception_v3':
 	with slim.arg_scope(inc.inception_v3_arg_scope()):
 		logits, endpoints = inc.inception_v3(x, num_classes=config.n_classes, is_training=False)
 		feat_layer = endpoints['PreLogits']
-	all_vars = tf.all_variables()
-	var_to_restore = [v for v in all_vars] # if not v.name.startswith('Logits')]
+	#all_vars = tf.all_variables()
+	#var_to_restore = [v for v in all_vars] 
 
-
+model_path = '/shared/data/models/' + config.model_name + '.ckpt'
 
 tf.train.start_queue_runners(sess=sess)
 saver = tf.train.Saver(var_to_restore)
@@ -105,24 +90,41 @@ saver.restore(sess, model_path)
 
 print("\nStart Extracting features")
 
-feat = []
-lab = []
-for i in range(num_file+1):
-	batch_x, batch_y = sess.run([trainX, trainY])
-	_, idx = np.nonzero(batch_y)
+for itr in range(100):
+	print("\nFor the {0:03d}".format(itr))
+	awa_train_path = config.data_path + 'meta/path_label_list{0:03d}.txt'.format(itr)
+	
+	# num_file : int 
+	# count the number of input image files
+	with open(awa_train_path) as f:
+	    for num_file, l in enumerate(f):
+	        pass
 
-	feature = sess.run(feat_layer, feed_dict={x: batch_x, y_: batch_y, keep_prob:1.0})
-	feat.append(feature[0][0][0])
-	lab.append(idx[0])
-	if i%1000 == 0:
-		print("{0:5f} % done".format(100*i/num_file))
+	"""
+	example) queue_data('/home/siit/navi/data/sample/meta/path_label_list.txt', 
+	50, 1, 'val',multi_label=False)
+	"""
+	trainX, trainY = data_loader.queue_data(
+			awa_train_path, config.n_classes, config.batch_size, 'val', multi_label=False)
+
+	feat = []
+	lab = []
+	for i in range(num_file+1):
+		batch_x, batch_y = sess.run([trainX, trainY])
+		_, idx = np.nonzero(batch_y)
+
+		feature = sess.run(feat_layer, feed_dict={x: batch_x, y_: batch_y, keep_prob:1.0})
+		feat.append(feature[0][0][0])
+		lab.append(idx[0])
+		if i%1000 == 0:
+			print("{0:5f} % done".format(100*i/num_file))
 
 
-save_path = config.data_path + 'meta/'
-if not os.path.exists(save_path):
-	os.mkdir(save_path)
+	save_path = config.data_path + 'meta/'
+	if not os.path.exists(save_path):
+		os.mkdir(save_path)
 
-sio.savemat(save_path + config.model_name + '_feature_prediction.mat', 
-	{'feature': feat, 'label': lab})
+	sio.savemat(save_path + config.model_name + '_feature_prediction{0:03d}.mat'.format(itr), 
+		{'feature': feat, 'label': lab})
 
-print('end')
+	print('end')

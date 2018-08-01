@@ -1,8 +1,20 @@
+"""
+python tag_label_convertor.py \
+--data_path=/shared/data/danbooru2017/256px/meta/
+"""
 import collections, itertools
 import os 
 import operator
 import numpy as np 
 import danbooru_data as dd
+
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--data_path', type=str, dest='data_path', default='/shared/data/')
+parser.add_argument('--img_path', type=str, dest='img_path', default='danbooru2017/256px/')
+config, unparsed = parser.parse_known_args() 
+
 
 num_used_key = 100
 # top 100 tags in the danbooru set. 
@@ -24,7 +36,7 @@ example key) '0777/1143777.jpg', '0170/2918170.jpg', '0225/1707225.jpg', '0360/2
 def convert_to(metadata_path, smoothing = 0, 
 	key_list = sorted_key_lst, num_file = 1000):
 	tag_dict = {}
-	for i in range(6):
+	for i in range(1):
 		tag_dict.update(dict(np.load(os.path.join(metadata_path, 'metadata_{}.npy'.format(i))).item()))
 
 	# key_list = sorted_key_lst[:num_used_key]
@@ -48,10 +60,51 @@ def convert_to(metadata_path, smoothing = 0,
 	
 	return label_dict
 
+
+def find_files_iter(paths, extensions, sort=True, itr = 100):
+    if type(paths) is str:
+        paths = [paths]
+    files = []
+    for path in paths:
+        for dirs in os.listdir(path):
+            if dirs.endswith(extensions):
+                files.append(os.path.join(path, dirs))
+            else:
+                if str.isdigit(dirs):
+                    if ('.' not in dirs) and (int(dirs) < (itr + 1) * 10) and (int(dirs) > itr * 10):
+                        for file in os.listdir(path+dirs):
+                            if file.endswith(extensions):
+                                files.append(os.path.join(path+dirs, file))
+    if sort:
+        files.sort()
+    return files
+
 #sorted_key_lst[:num_used_key]
 label_tags_lst = []
 for group in dd.grouped_tag_lst:
 	label_tags_lst.extend(group)
 
+label_dict = convert_to(config.data_path + config.img_path + 'meta/', 
+	key_list = label_tags_lst)
 
-# label_lst = convert_to('./',key_list = label_tags_lst)
+"""
+file_list[1] takes the file dirs start with '001'
+for example '0011/519011.jpg', '0017/2484017.jpg'
+"""
+file_tag_list = [[] for i in range(100)]
+for itr in range(1):
+	file_tag_list[itr] = [[key, label_dict[key]] for key in label_dict.keys() 
+	if key.startswith('{0:03d}'.format(itr))]
+	file_tag_list[itr].sort()
+
+
+for itr in range(1):
+	f = open(config.data_path + 'file_label_list{0:03}.txt'.format(itr), 'w')
+	for key in file_tag_list[itr]:
+		f.write(key)
+	f.close()
+
+def tag_counter(label_dict):
+
+	tag_count = []
+	for i in range()

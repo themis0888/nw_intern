@@ -1,7 +1,7 @@
 """
 python -i file_list_writer.py \
 --data_path=/shared/data/mnist_png/ \
---iter = True
+--path_label True
 """
 
 import os
@@ -32,16 +32,16 @@ def file_list(path, extensions, sort=True, path_label = False):
 
 
 # make the save dir if it is not exists
-save_path = config.data_path + 'meta/'
+save_path = os.path.join(config.data_path, 'meta')
 if not os.path.exists(save_path):
     os.mkdir(save_path)
 
-file_lst = file_list(config.data_path, ('.py','.txt'), True, config.path_label)
+file_lst = file_list(config.data_path, ('.jpg','.png'), True, config.path_label)
 lenth = len(file_lst)
 
 for itr in range(config.iter):
     # save the file inside of the meta/ folder
-    f = open(config.data_path + 'meta/' + 'path_label_list{0:03d}.txt'.format(itr), 'w')
+    f = open(os.path.join(save_path, 'path_label_list{0:03d}.txt'.format(itr)), 'w')
     for line in file_lst[int((itr)*lenth/config.iter):int((itr+1)*lenth/config.iter)]:
         f.write(line + '\n')
     f.close()

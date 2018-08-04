@@ -24,7 +24,7 @@ import scipy.io as sio
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--data_path', type=str, dest='data_path', default='/home/siit/navi/data/danbooru2017/256px/')
+parser.add_argument('--data_path', type=str, dest='data_path', default='/shared/data/danbooru2017/256px/')
 parser.add_argument('--data_name', type=str, dest='data_name', default='danbooru')
 parser.add_argument('--model_name', type=str, dest='model_name', default='vgg_19')
 

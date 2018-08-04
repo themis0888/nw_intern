@@ -1,7 +1,0 @@
-/mnt/c/Users/USER/Dropbox/CSwork/webtoon/nw_intern/utils/danbooru_data.py
-/mnt/c/Users/USER/Dropbox/CSwork/webtoon/nw_intern/utils/data_loader.py
-/mnt/c/Users/USER/Dropbox/CSwork/webtoon/nw_intern/utils/imagenet_input.py
-/mnt/c/Users/USER/Dropbox/CSwork/webtoon/nw_intern/utils/tag_label_convertor.py
-/mnt/c/Users/USER/Dropbox/CSwork/webtoon/nw_intern/utils/utils.py
-/mnt/c/Users/USER/Dropbox/CSwork/webtoon/nw_intern/utils/vgg19_awa_extractor.py
-/mnt/c/Users/USER/Dropbox/CSwork/webtoon/nw_intern/utils/vgg19_extractor.py

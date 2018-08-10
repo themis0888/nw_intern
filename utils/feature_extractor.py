@@ -6,7 +6,7 @@ python feature_extractor.py \
 --model_name=vgg_19
 
 
-CUDA_VISIBLE_DEVICES=3 python feature_extractor.py \
+CUDA_VISIBLE_DEVICES=1 python feature_extractor.py \
 --data_path=/shared/data/danbooru2017/256px/ \
 --list_path=/shared/data/danbooru2017/256px/meta/ \
 --model_name=vgg_19
@@ -26,6 +26,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--data_path', type=str, dest='data_path', default='/shared/data/danbooru2017/256px/')
 parser.add_argument('--data_name', type=str, dest='data_name', default='danbooru')
+parser.add_argument('--model_path', type=str, dest='model_path', default='/shared/data/models/')
 parser.add_argument('--model_name', type=str, dest='model_name', default='vgg_19')
 
 parser.add_argument('--memory_usage', type=float, dest='memory_usage', default=0.96)
@@ -82,11 +83,11 @@ elif config.model_name == 'inception_v3':
 	#all_vars = tf.all_variables()
 	#var_to_restore = [v for v in all_vars] 
 
-model_path = '/shared/data/models/' + config.model_name + '.ckpt'
+model = config.model_path + config.model_name + '.ckpt'
 
 tf.train.start_queue_runners(sess=sess)
 saver = tf.train.Saver(var_to_restore)
-saver.restore(sess, model_path)
+saver.restore(sess, model)
 
 print("\nStart Extracting features")
 

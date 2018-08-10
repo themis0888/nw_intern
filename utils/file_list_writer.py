@@ -1,7 +1,7 @@
 """
 python -i file_list_writer.py \
---data_path=/shared/data/mnist_png/ \
---path_label True
+--data_path=/shared/data/danbooru2017/256px/0000/ \
+--path_label False
 """
 
 import os

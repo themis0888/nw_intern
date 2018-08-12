@@ -1,6 +1,6 @@
 """ 
 python error_data_filter.py \
---data_path=/shared/data/dogs_vs_cats
+--data_path=/shared/data/dog2cat
 """
 
 from __future__ import division

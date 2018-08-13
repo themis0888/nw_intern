@@ -32,5 +32,10 @@ def file_list(path, extensions, sort=True, path_label = False):
         for f in filenames if os.path.splitext(f)[1] in extensions]
     if sort:
         result.sort()
-
     return result
+
+def lost_file_remover(path, exists_list):
+    filenames = file_list(path, ['.jpg'])
+    for filename in filenames:
+        if not os.path.basename(filename) in exists_list:
+            os.remove(filename)

@@ -113,13 +113,17 @@ trainX, trainY = data_loader.queue_data(
 
 feat = []
 lab = []
+path_feat = {}
 for i in range(num_file+1):
 	batch_x, batch_y = sess.run([trainX, trainY])
 	_, idx = np.nonzero(batch_y)
 
 	feature = sess.run(feat_layer, feed_dict={x: batch_x, y_: batch_y, keep_prob:1.0})
 	feat.append(feature[0][0][0])
+
 	lab.append(idx[0])
+	path_feat[]
+	
 	if i%1000 == 0:
 		print("{0:5f} % done".format(100*i/num_file))
 

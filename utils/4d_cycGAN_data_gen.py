@@ -86,7 +86,7 @@ def feature_writer(img_path):
 	# if the image has no face or you don't choose any key to detect, it will stop
 	
 	if not af_obj:
-		print('{} has no face'.format(os.path.basename(img_path)))
+		print('{} has no face'.format(img_name))
 		return False
 
 	af_dict = af_obj[0]
@@ -124,6 +124,7 @@ if not os.path.exists(config.save_path):
 feat_dict = {}
 
 i = 0
+num_no_face = 0
 num_file = len(file_lst)
 for file_path in file_lst:
 	# find_face(file_path, ['face', 'eye'])
@@ -136,11 +137,14 @@ for file_path in file_lst:
 
 	i += 1
 	feat_list = feature_writer(file_path)
-	if not feat_dict:
+	if feat_list != False:
 		feat_dict[img_name] = feat_list + points
+	else: 
+		num_no_face += 1
 
 
 	if i % 500 == 0:
 		print('{0:03f}% done'.format(i/num_file))
+		print('no face images {}'.format(num_no_face))
 
 np.save('anime_feat_dict.npy', np.array(feat_dict))

@@ -40,7 +40,8 @@ def lost_file_remover(path, exists_list):
 		if not os.path.basename(filename) in exists_list:
 			os.remove(filename)
 
-# ex) '/shared/data/f2c_4dcyc/trainA/np_008083.npy'
+# '/shared/data/f2c_4dcyc/trainA/np_008083.npy'
+# '/shared/data/face2cartoon/trainA/008083.jpg'
 def convert_npy_f2d(path):
 	filenames = file_list(path, ['.npy'])
 	for filename in filenames:
@@ -53,3 +54,18 @@ def convert_npy_f2d(path):
 					
 		npy_file = np.uint8(npy_file)
 		np.save(filename, npy_file)
+
+
+def convert_npy_RGB_BGR(path):
+	filenames = file_list(path, ['.npy'])
+	for filename in filenames:
+		npy_file = np.load(filename)
+		[h, w, c] = npy_file.shape
+		temp = np.zeros([h, w, c])
+		temp[:,:,0] = npy_file[:,:,2]
+		temp[:,:,1] = npy_file[:,:,1]
+		temp[:,:,2] = npy_file[:,:,0]
+		temp[:,:,3] = npy_file[:,:,3]					
+	
+		np.save(filename, temp)
+

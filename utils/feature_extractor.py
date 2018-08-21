@@ -59,7 +59,6 @@ res = nets.resnet_v1
 inc = nets.inception
 
 if config.model_name == 'vgg_19':
-
 	with slim.arg_scope(vgg.vgg_arg_scope()):
 		logits, endpoints = vgg.vgg_19(x, num_classes=config.n_classes, is_training=False)
 		feat_layer = endpoints['vgg_19/fc7']

@@ -87,9 +87,9 @@ def find_face(img_path, parts = ['face', 'eye']):
 	return 0 
 
 """ 
-metadata looks like:
-{ '0001.png': [(1,0,0), (252,239,232), (89,120,165), (204,68,101)]
-'0002.png': [(0,1,0), (252,223,190), (96,132,180), (201,91,104)]
+metadata looks like: {file name: skin color RGB, hair color RGB, eye color RGB}
+{ '0001.png': [252,239,232, 89,120,165, 204,68,101]
+'0002.png': [252,223,190, 96,132,180, 201,91,104]
  ... }
 each column stands for sex, skin color, hair color and eye color in RGB format.
 """
@@ -136,14 +136,14 @@ def file_list(path, extensions, sort=True, path_label = False):
 
 
 input_path = os.path.join(config.data_path)
-file_lst = file_list(input_path, ('.jpg','.png'), True)
+file_lst = file_list(input_path, ('.jpg','.png'), sort = True)
 
 if not os.path.exists(config.save_path):
 	os.mkdir(config.save_path)
 
 
 if config.draw_box:
-	nw_files = [file for file in file_lst if 'free' not in file]
+	nw_files = file_list # [file for file in file_lst if 'free' not in file]
 	random.shuffle(nw_files)
 
 	num_file = 0

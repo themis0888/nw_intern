@@ -44,16 +44,21 @@ def lost_file_remover(path, exists_list):
 # '/shared/data/face2cartoon/trainA/008083.jpg'
 def convert_npy_f2d(path):
 	filenames = file_list(path, ['.npy'])
+	counter = 0
+	num_tot = len(filenames)
 	for filename in filenames:
+		counter += 1
 		npy_file = np.load(filename)
 		[h, w, c] = npy_file.shape
 		for y in range(h):
 			for x in range(w):
 				if npy_file[y, x, -1] != 0:
-					npy_file[y, x, -1] = 255
-					
+					npy_file[y, x, -1] = 127
+		npy_file[:,:,-1] += 127
 		npy_file = np.uint8(npy_file)
 		np.save(filename, npy_file)
+		if np.mod(counter, 10000):
+			print('{0:.3}% done'.format(100*counter/num_tot))
 
 
 def convert_npy_RGB_BGR(path):

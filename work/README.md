@@ -12,12 +12,12 @@ Other package is listed in requirments.txt. run
 
 You can find the detail explanation and exp result from the pdf file `1808nw_final.pdf` 
 
-<img src=".\006_exp_result.JPG" width="400">
+<img src=".\work\006_exp_result.JPG" width="400">
 
 
 In addition,  you can check the all experiments that I went through from the excel file `1808nw_work.xlsx`
 
-<img src=".\005_exp_log.JPG">
+<img src=".\work\005_exp_log.JPG">
 
 
 

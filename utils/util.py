@@ -19,6 +19,8 @@ import scipy
 import tensorflow as tf
 import tensorflow.contrib.slim.nets as nets
 import scipy.io as sio
+import skimage.io as skio
+import skimage
 
 import argparse
 
@@ -74,3 +76,24 @@ def convert_npy_RGB_BGR(path):
 	
 		np.save(filename, temp)
 
+
+def mat_resize(npy_file, fine_size):
+    img = npy_file
+    img_layer = []
+    for i in range(img.shape[-1]):
+        img_layer.append(np.zeros([fine_size, fine_size]))
+        img_layer[i] = scipy.misc.imresize(img[:,:,i], [fine_size, fine_size])
+        img_layer[i] = np.expand_dims(img_layer[i], axis = -1)
+        if i == 0:
+            img_concat = img_layer[i]
+        else:
+            img_concat = np.concatenate((img_concat, img_layer[i]), axis = -1)
+    return img_concat
+
+
+def image_resize(data_path, save_path, input_size, output_size):
+	img = scipy.misc.imread(data_path)
+	img = mat_resize(img, output_size)
+	img_name = os.path.basename(data_path)
+	scipy.misc.imsave(os.path.join(save_path, img_name), img)
+	
